@@ -2,6 +2,7 @@
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxL9n0sQfUP4-hvne-_MYZhlHBfA1-8X7hqOm-Gao43gYt8vJXzo7Tr_kWYZYTuLvGd/exec";
 
 const riwayatTableBody = document.getElementById("riwayatTableBody");
+let semuaTransaksi = [];
 
 // Saat halaman dimuat, ambil data transaksi
 fetchDataRiwayat();
@@ -11,7 +12,8 @@ function fetchDataRiwayat() {
     .then((res) => res.json())
     .then((data) => {
       if (data.success) {
-        renderTabel(data.data);
+        semuaTransaksi = data.data;
+        renderTabel(semuaTransaksi);
       } else {
         riwayatTableBody.innerHTML = "<tr><td colspan='4'>Gagal memuat data.</td></tr>";
       }
@@ -26,7 +28,7 @@ function renderTabel(dataTransaksi) {
   riwayatTableBody.innerHTML = "";
 
   if (dataTransaksi.length === 0) {
-    riwayatTableBody.innerHTML = "<tr><td colspan='4'>Belum ada transaksi.</td></tr>";
+    riwayatTableBody.innerHTML = "<tr><td colspan='4'>Tidak ada transaksi yang sesuai filter.</td></tr>";
     return;
   }
 
@@ -39,11 +41,55 @@ function renderTabel(dataTransaksi) {
       <td>${item.tanggal}</td>
       <td>${item.jenis === "pemasukan" ? "Pemasukan" : "Pengeluaran"}</td>
       <td>${item.kategori}</td>
-      <td>Rp ${parseInt(item.jumlah).toLocaleString()}</td>
+      <td>Rp ${parseInt(item.jumlah).toLocaleString("id-ID")}</td>
     `;
     riwayatTableBody.appendChild(row);
   });
 }
+
+// 🎯 Filter form handler
+document.getElementById("filterForm").addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  const tanggalInputRaw = document.getElementById("filterTanggal").value.trim();
+  const kategoriInput = document.getElementById("filterKategori").value.toLowerCase().trim();
+
+  // Format tanggal ke YYYY-MM-DD jika tidak kosong
+  let formattedTanggal = "";
+  if (tanggalInputRaw) {
+    const tanggalInput = new Date(tanggalInputRaw);
+    if (!isNaN(tanggalInput)) {
+      formattedTanggal = tanggalInput.toISOString().split("T")[0];
+    }
+  }
+
+const hasilFilter = semuaTransaksi.filter(item => {
+  let tanggalItem = "";
+
+  try {
+    tanggalItem = new Date(item.tanggal).toISOString().split("T")[0];
+  } catch (e) {
+    tanggalItem = item.tanggal; // fallback kalau parsing gagal
+  }
+
+  const cocokTanggal = formattedTanggal ? tanggalItem === formattedTanggal : true;
+  const cocokKategori = kategoriInput ? item.kategori.toLowerCase().includes(kategoriInput) : true;
+  return cocokTanggal && cocokKategori;
+});
+
+  renderTabel(hasilFilter);
+});
+
+// 🔁 Reset filter
+document.getElementById("resetFilter").addEventListener("click", () => {
+  document.getElementById("filterForm").reset();
+  renderTabel(semuaTransaksi);
+});
+
+// 🔐 Logout
+document.getElementById('logoutBtn').addEventListener('click', () => {
+  window.location.href = 'index.html';
+});
 
 // Sidebar toggle
 function toggleMenu() {

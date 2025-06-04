@@ -261,6 +261,56 @@ table td {
   border-bottom: 1px solid #ddd;
   font-size: 15px;
 }
+.filter-section {
+  margin: 40px auto;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(8px);
+  max-width: 960px;
+}
+
+.filter-section h2 {
+  margin-bottom: 20px;
+  color: #5b4e1e;
+  text-align: center;
+}
+
+.filter-section label {
+  font-weight: 600;
+  margin-top: 12px;
+  display: block;
+  color: #333;
+}
+
+.filter-section input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 4px;
+  margin-bottom: 16px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 16px;
+}
+
+.filter-section button {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  background-color: #5b4e1e;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.filter-section button:hover {
+  background-color: #847636;
+}
 
 /* Animasi */
 @keyframes fadeIn {

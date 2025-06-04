@@ -22,7 +22,19 @@
     <a href="pemasukan.html">📥 Pemasukan</a>
     <a href="pengeluaran.html">💸 Pengeluaran</a>
   </div>
+<section class="filter-section">
+      <h2>🔎 Filter Transaksi</h2>
+      <form id="filterForm">
+        <label for="filterTanggal">Tanggal:</label>
+        <input type="date" id="filterTanggal" name="tanggal" />
 
+        <label for="filterKategori">Kategori:</label>
+        <input type="text" id="filterKategori" name="kategori" placeholder="contoh: Gaji, Belanja" />
+
+        <button type="submit">Terapkan Filter</button>
+        <button type="button" id="resetFilter">Reset</button>
+      </form>
+    </section>
   <main>
     <section class="table-section">
       <h2>Semua Transaksi</h2>
