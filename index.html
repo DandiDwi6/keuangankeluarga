@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login - Keuangan Keluarga</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: url('./assets/img/bg2.jpg') no-repeat center center fixed;
+      background-size: cover;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .login-box {
+      background: #fff;
+      padding: 30px 25px;
+      border-radius: 15px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 350px;
+      text-align: center;
+    }
+
+    .login-box h2 {
+      margin-bottom: 20px;
+      color: #333;
+      font-weight: 600;
+    }
+
+    .login-box input {
+      width: 100%;
+      padding: 10px 12px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 15px;
+    }
+
+    .login-box button {
+      width: 100%;
+      padding: 12px;
+      background-color: #827435;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .login-box button:hover {
+      background-color: #7a7042;
+    }
+
+    .login-box .register-link {
+      margin-top: 15px;
+      font-size: 14px;
+    }
+
+    .login-box .register-link a {
+      color: #827435;
+      text-decoration: none;
+    }
+
+    .login-box .register-link a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-box">
+    <h2>👨‍👩‍👧‍👦 Login Keuangan Keluarga</h2>
+    <form id="loginForm">
+      <input type="text" id="email" placeholder="Email atau Username" required />
+      <input type="password" id="password" placeholder="Password" required />
+      <button type="submit">Masuk</button>
+    </form>
+    <div class="register-link">
+      Belum punya akun? <a href="#">Daftar di sini</a>
+    </div>
+  </div>
+
+  <script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbxL9n0sQfUP4-hvne-_MYZhlHBfA1-8X7hqOm-Gao43gYt8vJXzo7Tr_kWYZYTuLvGd/exec'; // URL Web App kamu
+
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      const url = `${scriptURL}?action=login&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`;
+
+      try {
+        const response = await fetch(url);
+        const result = await response.json();
+
+        if (result.success) {
+          alert('Login berhasil!');
+          window.location.href = 'dashboard.html'; // Arahkan ke dashboard
+        } else {
+          alert('Login gagal! Periksa email dan password.');
+        }
+      } catch (error) {
+        alert('Terjadi kesalahan saat login.');
+        console.error(error);
+      }
+    });
+  </script>
+
+</body>
+</html>

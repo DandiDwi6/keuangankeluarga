@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pemasukan - Keuangan Keluarga</title>
+  <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+  <header>
+    <button class="hamburger" onclick="toggleMenu()">☰</button>
+    <h1>📥 Pemasukan Keluarga</h1>
+    <button id="logoutBtn">Logout</button>
+  </header>
+
+  <div id="sidebar" class="sidebar">
+    <div class="sidebar-header">
+      <span class="sidebar-title">📋 Menu</span>
+      <button class="close-btn" onclick="toggleMenu()">×</button>
+    </div>
+    <a href="dashboard.html">🏠 Dashboard</a>
+    <a href="pengeluaran.html">💸 Pengeluaran</a>
+    <a href="riwayat.html">📜 Riwayat</a>
+  </div>
+
+  <main>
+    <section class="form-section">
+      <h2>Tambah Pemasukan</h2>
+      <form id="pemasukanForm">
+        <label for="tanggal">Tanggal:</label>
+        <input type="date" id="tanggal" name="tanggal" required>
+
+        <label for="sumber">Sumber Pemasukan:</label>
+        <input type="text" id="sumber" name="sumber" placeholder="Contoh: Gaji, Bonus" required>
+
+        <label for="jumlah">Jumlah (Rp):</label>
+        <input type="number" id="jumlah" name="jumlah" required>
+
+        <button type="submit">Simpan</button>
+      </form>
+    </section>
+
+    <section class="table-section">
+      <h2>Riwayat Pemasukan</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Tanggal</th>
+            <th>Sumber</th>
+            <th>Jumlah</th>
+          </tr>
+        </thead>
+        <tbody id="pemasukanTableBody">
+          <!-- Data akan dimasukkan lewat JS -->
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <script src="pemasukan.js"></script>
+</body>
+</html>

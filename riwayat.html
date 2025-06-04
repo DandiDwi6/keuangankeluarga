@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Riwayat Transaksi - Keuangan Keluarga</title>
+  <link rel="stylesheet" href="dashboard.css" />
+</head>
+<body>
+  <header>
+    <button class="hamburger" onclick="toggleMenu()">☰</button>
+    <h1>📜 Riwayat Transaksi</h1>
+    <button id="logoutBtn">Logout</button>
+  </header>
+
+  <div id="sidebar" class="sidebar">
+    <div class="sidebar-header">
+      <span class="sidebar-title">📋 Menu</span>
+      <button class="close-btn" onclick="toggleMenu()">×</button>
+    </div>
+    <a href="dashboard.html">🏠 Dashboard</a>
+    <a href="pemasukan.html">📥 Pemasukan</a>
+    <a href="pengeluaran.html">💸 Pengeluaran</a>
+  </div>
+
+  <main>
+    <section class="table-section">
+      <h2>Semua Transaksi</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Tanggal</th>
+            <th>Jenis</th>
+            <th>Kategori</th>
+            <th>Jumlah</th>
+          </tr>
+        </thead>
+        <tbody id="riwayatTableBody">
+          <!-- Data akan dimasukkan lewat JS -->
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <script src="riwayat.js"></script>
+</body>
+</html>

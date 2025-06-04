@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard Keuangan Keluarga</title>
+  <link rel="stylesheet" href="dashboard.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <header>
+    <div id="sidebar" class="sidebar">
+      <div class="sidebar-header">
+        <span class="sidebar-title">📋 Menu</span>
+        <button class="close-btn" onclick="toggleMenu()">×</button>
+      </div>
+      <a href="pemasukan.html">💰 Pemasukan</a>
+      <a href="pengeluaran.html">💸 Pengeluaran</a>
+      <a href="riwayat.html">📜 Riwayat</a>
+    </div>
+
+    <button class="hamburger" onclick="toggleMenu()">☰</button>
+    <h1>💰 Dashboard Keuangan Keluarga</h1>
+    <button id="logoutBtn">Logout</button>
+  </header>
+<main>
+  <div class="summary">
+    <div class="card">
+      <h2>💰Pemasukan</h2>
+      <p>Rp <span id="pemasukan">0</span></p>
+    </div>
+    <div class="card">
+      <h2>💸Pengeluaran</h2>
+      <p>Rp <span id="pengeluaran">0</span></p>
+    </div>
+    <div class="card">
+      <h2>📜Sisa Saldo</h2>
+      <p>Rp <span id="sisaSaldo">0</span></p>
+    </div>
+  </div>
+  
+</main>
+<section class="summary">
+  <div class="card">
+    <h2>🎯 Rencana Keuangan</h2>
+    <p>Target Tabungan: Rp 10.000.000</p>
+    <progress id="tabunganProgress" value="0" max="10000000" style="width: 100%; height: 20px;"></progress>
+  </div>
+
+  <div class="card">
+    <h2>📋 Transaksi Terbaru</h2>
+    <ul id="transaksi-terbaru"></ul> <!-- GANTI ini -->
+  </div>
+
+  <div class="card">
+    <h2>💬 Tips Keuangan</h2>
+    <blockquote>"Sisihkan sebelum dibelanjakan, bukan sebaliknya."</blockquote>
+  </div>
+</section>
+<section class="summary">
+  <div class="card">
+    <h2>⚠️ Notifikasi</h2>
+    <p id="notifikasi"></p> <!-- TAMBAH id -->
+  </div>
+
+  <div class="card">
+    <h2>📊 Grafik Pengeluaran</h2>
+    <canvas id="chartPengeluaran" width="300" height="200"></canvas> <!-- GANTI id -->
+  </div>
+
+  <div class="card">
+    <h2>🧾 Cicilan</h2>
+    <ul>
+      <li>Motor: Rp 500.000 / bulan (3x lagi)</li>
+      <li>HP: Rp 250.000 / bulan (5x lagi)</li>
+    </ul>
+  </div>
+</section>
+
+  <script src="dashboard.js"></script>
+</body>
+</html>
