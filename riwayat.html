@@ -4,12 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Riwayat Transaksi - Keuangan Keluarga</title>
+  
   <link rel="stylesheet" href="dashboard.css" />
 </head>
 <body>
-<div id="loader" class="loader-overlay">
-  <div class="spinner"></div>
-</div>
+  <div id="loader" class="loader-overlay">
+    <div class="spinner"></div>
+  </div>
 
   <header>
     <button class="hamburger" onclick="toggleMenu()">☰</button>
@@ -26,41 +27,71 @@
     <a href="pemasukan.html">📥 Pemasukan</a>
     <a href="pengeluaran.html">💸 Pengeluaran</a>
   </div>
-<section class="filter-section">
-      <h2>🔎 Filter Transaksi</h2>
-      <form id="filterForm">
-        <label for="filterTanggal">Tanggal:</label>
-        <input type="date" id="filterTanggal" name="tanggal" />
 
-        <label for="filterKategori">Kategori:</label>
-        <input type="text" id="filterKategori" name="kategori" placeholder="contoh: Gaji, Belanja" />
+  <section class="filter-section">
+    <h2>🔎 Filter Transaksi</h2>
+    <form id="filterForm">
+      <label for="filterTanggal">Tanggal:</label>
+      <input type="date" id="filterTanggal" name="tanggal" />
 
-        <button type="submit">Terapkan Filter</button>
-        <button type="button" id="resetFilter">Reset</button>
-      </form>
-    </section>
+      <label for="filterKategori">Kategori:</label>
+      <input type="text" id="filterKategori" name="kategori" placeholder="contoh: Gaji, Belanja" />
+
+      <button type="submit">Terapkan Filter</button>
+      <button type="button" id="resetFilter">Reset</button>
+    </form>
+  </section>
+
   <main>
-   <section class="table-section">
-  <h2>Semua Transaksi</h2>
-  <div class="table-wrapper">
-    <table>
-      <thead>
-        <tr>
-          <th>Tanggal</th>
-          <th>Jenis</th>
-          <th>Kategori</th>
-          <th>Jumlah</th>
-        </tr>
-      </thead>
-      <tbody id="riwayatTableBody">
-        <!-- Data akan dimasukkan lewat JS -->
-      </tbody>
-    </table>
-  </div>
-</section>
+    <section class="table-section">
+      <h2>📄 Semua Transaksi</h2>
 
+      <!-- 🔽 Dropdown bulan & tahun -->
+      <div style="margin-bottom: 1rem;">
+        <label for="bulanSelect">Bulan:</label>
+        <select id="bulanSelect">
+          <option value="1">Januari</option>
+          <option value="2">Februari</option>
+          <option value="3">Maret</option>
+          <option value="4">April</option>
+          <option value="5">Mei</option>
+          <option value="6">Juni</option>
+          <option value="7">Juli</option>
+          <option value="8">Agustus</option>
+          <option value="9">September</option>
+          <option value="10">Oktober</option>
+          <option value="11">November</option>
+          <option value="12">Desember</option>
+        </select>
+
+        <label for="tahunSelect">Tahun:</label>
+        <select id="tahunSelect"></select>
+      </div>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Tanggal</th>
+              <th>Jenis</th>
+              <th>Kategori</th>
+              <th>Jumlah</th>
+            </tr>
+          </thead>
+          <tbody id="riwayatTableBody">
+            <!-- Data akan dimasukkan lewat JS -->
+          </tbody>
+        </table>
+
+        <button id="download-pdf" class="btn">📥 Download Rekapan PDF</button>
+      </div>
+    </section>
   </main>
 
+  <!-- JS -->
   <script src="riwayat.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+
 </body>
 </html>

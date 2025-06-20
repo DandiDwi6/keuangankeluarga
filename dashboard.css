@@ -380,3 +380,17 @@ table td {
     min-width: 600px;
   }
 }
+button.btn {
+  background-color: #6b4c3b;
+  color: #fff;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+button.btn:hover {
+  background-color: #5a3f32;
+}

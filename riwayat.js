@@ -1,26 +1,21 @@
-// Ganti URL ini dengan URL Web App kamu yang sudah di-deploy
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxL9n0sQfUP4-hvne-_MYZhlHBfA1-8X7hqOm-Gao43gYt8vJXzo7Tr_kWYZYTuLvGd/exec";
 
 const riwayatTableBody = document.getElementById("riwayatTableBody");
 let semuaTransaksi = [];
 
-// Fungsi loader
 function showLoader() {
   const loader = document.getElementById("loader");
   if (loader) loader.style.display = "flex";
 }
-
 function hideLoader() {
   const loader = document.getElementById("loader");
   if (loader) loader.style.display = "none";
 }
 
-// Saat halaman dimuat, ambil data transaksi
 fetchDataRiwayat();
 
 function fetchDataRiwayat() {
   showLoader();
-
   fetch(`${SCRIPT_URL}?action=ambilTransaksi`)
     .then((res) => res.json())
     .then((data) => {
@@ -42,17 +37,17 @@ function renderTabel(dataTransaksi) {
   riwayatTableBody.innerHTML = "";
 
   if (dataTransaksi.length === 0) {
-    riwayatTableBody.innerHTML = "<tr><td colspan='4'>Tidak ada transaksi yang sesuai filter.</td></tr>";
+    riwayatTableBody.innerHTML = "<tr><td colspan='4'>Tidak ada transaksi.</td></tr>";
     return;
   }
 
-  // Urutkan dari terbaru ke terlama
   dataTransaksi.sort((a, b) => new Date(b.tanggal) - new Date(a.tanggal));
 
   dataTransaksi.forEach(item => {
     const row = document.createElement("tr");
+    const tglFormatted = new Date(item.tanggal).toLocaleDateString("id-ID");
     row.innerHTML = `
-      <td>${item.tanggal}</td>
+      <td>${tglFormatted}</td>
       <td>${item.jenis === "pemasukan" ? "Pemasukan" : "Pengeluaran"}</td>
       <td>${item.kategori}</td>
       <td>Rp ${parseInt(item.jumlah).toLocaleString("id-ID")}</td>
@@ -61,14 +56,12 @@ function renderTabel(dataTransaksi) {
   });
 }
 
-// 🎯 Filter form handler
 document.getElementById("filterForm").addEventListener("submit", (e) => {
   e.preventDefault();
 
   const tanggalInputRaw = document.getElementById("filterTanggal").value.trim();
   const kategoriInput = document.getElementById("filterKategori").value.toLowerCase().trim();
 
-  // Format tanggal ke YYYY-MM-DD jika tidak kosong
   let formattedTanggal = "";
   if (tanggalInputRaw) {
     const tanggalInput = new Date(tanggalInputRaw);
@@ -78,13 +71,7 @@ document.getElementById("filterForm").addEventListener("submit", (e) => {
   }
 
   const hasilFilter = semuaTransaksi.filter(item => {
-    let tanggalItem = "";
-    try {
-      tanggalItem = new Date(item.tanggal).toISOString().split("T")[0];
-    } catch (e) {
-      tanggalItem = item.tanggal;
-    }
-
+    const tanggalItem = new Date(item.tanggal).toISOString().split("T")[0];
     const cocokTanggal = formattedTanggal ? tanggalItem === formattedTanggal : true;
     const cocokKategori = kategoriInput ? item.kategori.toLowerCase().includes(kategoriInput) : true;
     return cocokTanggal && cocokKategori;
@@ -93,24 +80,19 @@ document.getElementById("filterForm").addEventListener("submit", (e) => {
   renderTabel(hasilFilter);
 });
 
-// 🔁 Reset filter
 document.getElementById("resetFilter").addEventListener("click", () => {
   document.getElementById("filterForm").reset();
   renderTabel(semuaTransaksi);
 });
 
-// 🔐 Logout
 document.getElementById('logoutBtn').addEventListener('click', () => {
   window.location.href = 'index.html';
 });
 
-// Sidebar toggle
 function toggleMenu() {
   const sidebar = document.getElementById('sidebar');
   sidebar.classList.toggle('active');
 }
-
-// Tutup sidebar jika klik di luar
 document.addEventListener('click', function (event) {
   const sidebar = document.getElementById('sidebar');
   const hamburger = document.querySelector('.hamburger');
@@ -123,3 +105,80 @@ document.addEventListener('click', function (event) {
     sidebar.classList.remove('active');
   }
 });
+
+document.getElementById("download-pdf").addEventListener("click", () => {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+
+  const now = new Date();
+  const bulan = now.getMonth() + 1;
+  const tahun = now.getFullYear();
+
+ const bulanDipilih = parseInt(document.getElementById("bulanSelect").value);
+const tahunDipilih = parseInt(document.getElementById("tahunSelect").value);
+const bulanNama = new Date(tahunDipilih, bulanDipilih - 1).toLocaleString('id-ID', { month: 'long', year: 'numeric' });
+
+
+  // Filter transaksi bulan & tahun yang dipilih
+  const dataBulanIni = semuaTransaksi.filter(item => {
+    const [yyyy, mm] = item.tanggal.split("-");
+    return Number(mm) === bulanDipilih && Number(yyyy) === tahunDipilih;
+  });
+
+  let saldo = 0;
+  let totalPengeluaran = 0;
+  const hariPengeluaranSet = new Set();
+
+  dataBulanIni.forEach(item => {
+    const jumlah = Number(item.jumlah);
+    if (item.jenis === "pemasukan") {
+      saldo += jumlah;
+    } else {
+      saldo -= jumlah;
+      totalPengeluaran += jumlah;
+      hariPengeluaranSet.add(item.tanggal); // simpan tanggal unik pengeluaran
+    }
+  });
+
+  const rataRata = hariPengeluaranSet.size > 0
+    ? Math.round(totalPengeluaran / hariPengeluaranSet.size)
+    : 0;
+
+  doc.setFontSize(16);
+  doc.text(`Rekapan Keuangan - ${bulanNama}`, 14, 20);
+  doc.setFontSize(12);
+  doc.text(`Sisa Saldo: Rp ${saldo.toLocaleString("id-ID")}`, 14, 30);
+  doc.text(`Total Pengeluaran Bulan Ini: Rp ${totalPengeluaran.toLocaleString("id-ID")}`, 14, 38);
+  doc.text(`Rata-rata Pengeluaran Harian: Rp ${rataRata.toLocaleString("id-ID")}`, 14, 46);
+
+  const rows = dataBulanIni.map((item, index) => [
+    index + 1,
+    item.tanggal,
+    item.kategori,
+    item.jenis,
+    `Rp ${Number(item.jumlah).toLocaleString("id-ID")}`
+  ]);
+
+  doc.autoTable({
+    startY: 54,
+    head: [['No', 'Tanggal', 'Kategori', 'Jenis', 'Jumlah']],
+    body: rows
+  });
+
+  doc.save(`Rekapan_${bulanNama}.pdf`);
+});
+
+// 🎯 Isi dropdown tahun mulai dari 2025 sampai 10 tahun ke depan
+(function isiDropdownTahun() {
+  const tahunSelect = document.getElementById("tahunSelect");
+  const tahunMulai = 2025; // tahun minimum
+  const tahunAkhir = new Date().getFullYear() + 10;
+
+  for (let i = tahunMulai; i <= tahunAkhir; i++) {
+    const opt = document.createElement("option");
+    opt.value = i;
+    opt.textContent = i;
+    if (i === new Date().getFullYear()) opt.selected = true;
+    tahunSelect.appendChild(opt);
+  }
+})();
