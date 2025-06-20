@@ -369,3 +369,14 @@ table td {
     font-size: 18px;
   }
 }
+.table-wrapper {
+  overflow-x: auto;
+  width: 100%;
+}
+
+/* Buat tabel tidak terlalu lebar pada layar kecil */
+@media screen and (max-width: 600px) {
+  table {
+    min-width: 600px;
+  }
+}
