@@ -8,7 +8,9 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-
+  <div id="loader" class="loader-overlay">
+  <div class="spinner"></div>
+</div>
   <header>
     <div id="sidebar" class="sidebar">
       <div class="sidebar-header">
@@ -61,12 +63,12 @@
 <section class="summary">
   <div class="card">
     <h2>⚠️ Notifikasi</h2>
-    <p id="notifikasi"></p> <!-- TAMBAH id -->
+    <p id="notifikasi"></p>
   </div>
 
   <div class="card">
     <h2>📊 Grafik Pengeluaran</h2>
-    <canvas id="chartPengeluaran" width="300" height="200"></canvas> <!-- GANTI id -->
+    <canvas id="chartPengeluaran" width="300" height="200"></canvas> 
   </div>
 
   <div class="card">

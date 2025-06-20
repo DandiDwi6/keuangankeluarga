@@ -4,10 +4,23 @@ const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxL9n0sQfUP4-hvne-_M
 const riwayatTableBody = document.getElementById("riwayatTableBody");
 let semuaTransaksi = [];
 
+// Fungsi loader
+function showLoader() {
+  const loader = document.getElementById("loader");
+  if (loader) loader.style.display = "flex";
+}
+
+function hideLoader() {
+  const loader = document.getElementById("loader");
+  if (loader) loader.style.display = "none";
+}
+
 // Saat halaman dimuat, ambil data transaksi
 fetchDataRiwayat();
 
 function fetchDataRiwayat() {
+  showLoader();
+
   fetch(`${SCRIPT_URL}?action=ambilTransaksi`)
     .then((res) => res.json())
     .then((data) => {
@@ -21,7 +34,8 @@ function fetchDataRiwayat() {
     .catch((err) => {
       console.error("Fetch error:", err);
       riwayatTableBody.innerHTML = "<tr><td colspan='4'>Terjadi kesalahan saat mengambil data.</td></tr>";
-    });
+    })
+    .finally(() => hideLoader());
 }
 
 function renderTabel(dataTransaksi) {
@@ -63,19 +77,18 @@ document.getElementById("filterForm").addEventListener("submit", (e) => {
     }
   }
 
-const hasilFilter = semuaTransaksi.filter(item => {
-  let tanggalItem = "";
+  const hasilFilter = semuaTransaksi.filter(item => {
+    let tanggalItem = "";
+    try {
+      tanggalItem = new Date(item.tanggal).toISOString().split("T")[0];
+    } catch (e) {
+      tanggalItem = item.tanggal;
+    }
 
-  try {
-    tanggalItem = new Date(item.tanggal).toISOString().split("T")[0];
-  } catch (e) {
-    tanggalItem = item.tanggal; // fallback kalau parsing gagal
-  }
-
-  const cocokTanggal = formattedTanggal ? tanggalItem === formattedTanggal : true;
-  const cocokKategori = kategoriInput ? item.kategori.toLowerCase().includes(kategoriInput) : true;
-  return cocokTanggal && cocokKategori;
-});
+    const cocokTanggal = formattedTanggal ? tanggalItem === formattedTanggal : true;
+    const cocokKategori = kategoriInput ? item.kategori.toLowerCase().includes(kategoriInput) : true;
+    return cocokTanggal && cocokKategori;
+  });
 
   renderTabel(hasilFilter);
 });

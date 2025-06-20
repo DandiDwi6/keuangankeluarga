@@ -317,6 +317,42 @@ table td {
   from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+/* Loader Overlay */
+.loader-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+/* Spinner */
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 6px solid #ccc;
+  border-top: 6px solid #6b5b2d;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+#loader {
+  transition: opacity 0.5s ease;
+}
+#loader.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Animasi */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
 
 /* Responsive */
 @media screen and (max-width: 768px) {
