@@ -125,20 +125,29 @@ const bulanNama = new Date(tahunDipilih, bulanDipilih - 1).toLocaleString('id-ID
     return Number(mm) === bulanDipilih && Number(yyyy) === tahunDipilih;
   });
 
-  let saldo = 0;
-  let totalPengeluaran = 0;
-  const hariPengeluaranSet = new Set();
+  // Hitung saldo dari semua transaksi (REAL)
+let saldo = 0;
+semuaTransaksi.forEach(item => {
+  const jumlah = Number(item.jumlah);
+  if (item.jenis === "pemasukan") {
+    saldo += jumlah;
+  } else {
+    saldo -= jumlah;
+  }
+});
 
-  dataBulanIni.forEach(item => {
+// Hitung pengeluaran dan rata-rata bulan yang dipilih
+let totalPengeluaran = 0;
+const hariPengeluaranSet = new Set();
+
+dataBulanIni.forEach(item => {
+  if (item.jenis === "pengeluaran") {
     const jumlah = Number(item.jumlah);
-    if (item.jenis === "pemasukan") {
-      saldo += jumlah;
-    } else {
-      saldo -= jumlah;
-      totalPengeluaran += jumlah;
-      hariPengeluaranSet.add(item.tanggal); // simpan tanggal unik pengeluaran
-    }
-  });
+    totalPengeluaran += jumlah;
+    hariPengeluaranSet.add(item.tanggal);
+  }
+});
+
 
   const rataRata = hariPengeluaranSet.size > 0
     ? Math.round(totalPengeluaran / hariPengeluaranSet.size)
